@@ -11,6 +11,7 @@
                             <th>Nama Karyawan</th>
                             <th>Tanggal</th>
                             <th>Nama Reimburse</th>
+                            <th>Jumlah</th>
                             <th>Deskripsi</th>
                             <th>Lampiran</th>
                             <th>Status</th>

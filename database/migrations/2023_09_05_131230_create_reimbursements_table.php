@@ -14,16 +14,17 @@ return new class extends Migration
         Schema::create('reimbursements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('kode');
             $table->date('tanggal');
             $table->string('nama_reimburs');
             $table->integer('jumlah');
             $table->text('deskripsi');
             $table->string('file');
             $table->string('status')->default('Menunggu Konfirmasi');
-            $table->string('dir_appr');
-            $table->string('fin_appr');
-            $table->integer('user_update');
-            $table->integer('user_delete');
+            $table->string('dir_appr')->nullable();
+            $table->string('fin_appr')->nullable();
+            $table->integer('user_update')->nullable();
+            $table->integer('user_delete')->nullable();
             $table->timestamps();
         });
     }
