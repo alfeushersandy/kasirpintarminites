@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->date('tanggal');
             $table->string('nama_reimburs');
+            $table->integer('jumlah');
             $table->text('deskripsi');
             $table->string('file');
             $table->string('status')->default('Menunggu Konfirmasi');

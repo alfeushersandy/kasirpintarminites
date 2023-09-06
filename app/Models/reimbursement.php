@@ -14,6 +14,7 @@ class reimbursement extends Model
         'tanggal',
         'nama_reimburs',
         'deskripsi',
+        'jumlah',
         'file',
         'status',
         'dir_appr',

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\ReimbursementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +23,5 @@ Route::get('/', function () {
 Route::group(['prefix' => 'kasirpintar', 'as' => 'kasirpintar.'], function(){
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::resource('/karyawan', KaryawanController::class);
+    Route::resource('/reimburse', ReimbursementController::class);
 });

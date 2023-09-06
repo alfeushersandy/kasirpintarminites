@@ -41,7 +41,7 @@
                                             <x-button-save title="Simpan" />
                                         </form>
                                         </x-modal>
-                                    <x-button-delete id="{{ $user->id }}" title="Hapus Data"
+                                    <x-button-delete id="{{ $user->id }}" title="Hapus Karyawan"
                                         url="{{ route('kasirpintar.karyawan.destroy', $user->id) }}" />
                                     </td>
                                 </td>
