@@ -45,7 +45,8 @@
             <!-- Footer -->
             @include('layouts.master.footer')
 
-            <!-- alert -->
+             <!-- alert -->
+             @include('sweetalert::alert')
         </div>
     </div>
 

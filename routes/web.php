@@ -20,8 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'kasirpintar', 'as' => 'kasirpintar.'], function(){
+Route::group(['prefix' => 'kasirpintar', 'as' => 'kasirpintar.','middleware' => ['auth']], function(){
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::resource('/karyawan', KaryawanController::class);
     Route::resource('/reimburse', ReimbursementController::class);
+    Route::get('/reimburse/{rembes}/approve', [ReimbursementController::class, 'approve'])->name('rembes.approve');
+    Route::get('/reimburse/{rembes}/reject', [ReimbursementController::class, 'rejected'])->name('rembes.reject');
 });

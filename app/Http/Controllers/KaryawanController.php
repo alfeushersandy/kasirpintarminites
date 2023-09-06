@@ -10,6 +10,11 @@ use Illuminate\Validation\Rule;
 
 class KaryawanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:add-karyawan');
+    }
+
     /**
      * Display a listing of the resource.
      */

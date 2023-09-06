@@ -10,7 +10,8 @@ class Reimbursement extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_user',
+        'user_id',
+        'kode',
         'tanggal',
         'nama_reimburs',
         'deskripsi',
@@ -26,7 +27,7 @@ class Reimbursement extends Model
     protected function file(): Attribute
     {
         return Attribute::make(
-            get: fn($file_upload) => asset('storage/reimburse/' . $file_upload),
+            get: fn($file_upload) => asset('storage/rembers/' . $file_upload),
         );
     }
 

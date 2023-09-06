@@ -8,8 +8,8 @@
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
                     <img src="" class="avatar" />
                     <div class="d-none d-xl-block pl-2">
-                        <div></div>
-                        <div class="mt-1 small text-muted"></div>
+                        <div>{{ Auth::user()->nama }}</div>
+                        <div class="mt-1 small text-muted">{{ Auth::user()->jabatan }}</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">

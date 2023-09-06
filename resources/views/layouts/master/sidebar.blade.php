@@ -11,8 +11,8 @@
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
                     <span class="avatar" style="background-image: url()"></span>
                     <div class="d-none d-xl-block pl-2">
-                        <div></div>
-                        <div class="mt-1 small text-muted"></div>
+                        <div>{{ Auth::user()->nip }}</div>
+                        <div class="mt-1 small text-muted">{{ Auth::user()->jabatan }}</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -38,8 +38,8 @@
             <ul class="navbar-nav pt-lg-3">
                 <div class="hr-text hr-text-left ml-2 mb-2 mt-2">Dashboard</div>
                 <li class="nav-item">
-                    <a class="nav-link"
-                        href="">
+                    <a class="nav-link {{ Route::is('kasirpintar.dashboard') ? 'active' : '' }}"
+                        href="{{ route('kasirpintar.dashboard') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block mr-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-tabler"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25"
@@ -55,29 +55,31 @@
                         </span>
                     </a>
                 </li>
-                <div class="hr-text hr-text-left ml-2 mb-2 mt-2">Karyawan</div>
-                <li class="nav-item">
-                    <a class="nav-link"
-                        href="">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block mr-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-tabler"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M8 9l3 3l-3 3"></path>
-                                <line x1="13" y1="15" x2="16" y2="15"></line>
-                                <rect x="4" y="4" width="16" height="16" rx="4"></rect>
-                            </svg>
-                        </span>
-                        <span class="nav-link-title">
-                            Master Karyawan
-                        </span>
-                    </a>
-                </li>
+                @can('add-karyawan', Auth::user())
+                    <div class="hr-text hr-text-left ml-2 mb-2 mt-2">Karyawan</div>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::is('kasirpintar.karyawan*') ? 'active' : '' }}"
+                            href="{{ route('kasirpintar.karyawan.index')}}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block mr-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-tabler"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M8 9l3 3l-3 3"></path>
+                                    <line x1="13" y1="15" x2="16" y2="15"></line>
+                                    <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Master Karyawan
+                            </span>
+                        </a>
+                    </li>                    
+                @endcan
                 <div class="hr-text hr-text-left ml-2 mb-2 mt-2">Transaksi</div>
                 <li class="nav-item">
-                    <a class="nav-link"
-                        href="">
+                    <a class="nav-link {{ Route::is('kasirpintar.reimburse*') ? 'active' : '' }}"
+                        href="{{route('kasirpintar.reimburse.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block mr-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-tabler"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25"
