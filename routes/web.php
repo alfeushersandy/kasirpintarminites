@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KaryawanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group(['prefix' => 'kasirpintar', 'as' => 'kasirpintar.'], function(){
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::resource('/karyawan', KaryawanController::class);
 });
