@@ -18,7 +18,11 @@ class ReimbursementController extends Controller
      */
     public function index()
     {
-        $rembers = Reimbursement::paginate(10);
+        if(Auth::user()->jabatan == "Direktur" || Auth::user()->jabatan == "Finance"){
+            $rembers = Reimbursement::paginate(10);
+        }else {
+            $rembers = Reimbursement::where('user_id', Auth::user()->id)->paginate(10);
+        }
         return view('reimbursement.index', compact('rembers'));
     }
 
@@ -29,10 +33,16 @@ class ReimbursementController extends Controller
             $rembes->status = ReimburseStatus::Approve;
             $rembes->dir_appr = Auth::user()->id;
             $rembes->update();
+            return redirect(route('kasirpintar.reimburse.index'))->with('success', 'Berhasil Approve permintaan');
         }else{
-            $rembes->status = ReimburseStatus::Verified;
-            $rembes->fin_appr = Auth::user()->id;
-            $rembes->update();
+            if(!$rembes->dir_appr){
+                return redirect(route('kasirpintar.reimburse.index'))->with('warning', 'Direktur belum memproses permintaan ini');
+            }else{
+                $rembes->status = ReimburseStatus::Verified;
+                $rembes->fin_appr = Auth::user()->id;
+                $rembes->update();
+                return redirect(route('kasirpintar.reimburse.index'))->with('success', 'Berhasil Verify permintaan');
+            }
         }
         
 
@@ -47,10 +57,12 @@ class ReimbursementController extends Controller
                 $rembes->status = ReimburseStatus::Reject_Dir;
                 $rembes->dir_appr = "";
                 $rembes->update();
+                return redirect(route('kasirpintar.reimburse.index'))->with('success', 'Berhasil Reject permintaan');
             }
 
             $rembes->status = ReimburseStatus::Reject_Dir;
             $rembes->update();
+            return redirect(route('kasirpintar.reimburse.index'))->with('success', 'Berhasil Reject permintaan');
 
         }else{
             if(!$rembes->dir_appr){
@@ -58,6 +70,7 @@ class ReimbursementController extends Controller
             }else{
                 $rembes->status = ReimburseStatus::Reject_Fin;
                 $rembes->update();
+                return redirect(route('kasirpintar.reimburse.index'))->with('success', 'Berhasil Reject permintaan');
             }
         }
         
@@ -101,7 +114,7 @@ class ReimbursementController extends Controller
             'file' => $file->hashName(),
         ]);
 
-        return redirect(route('kasirpintar.reimburse.index'));
+        return redirect(route('kasirpintar.reimburse.index'))->with('success', 'berhasil menambahkan permintaan');
     }
 
     /**
@@ -123,9 +136,22 @@ class ReimbursementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Reimbursement $rembers)
     {
-        //
+        $file = $this->uploadFile($request, $this->path);
+        
+            $rembers->update([
+                'tanggal' => $request->tanggal,
+                'jumlah' => $request->jumlah,
+                'nama_reimburs'  => $request->nama_reimburse,
+                'deskripsi' => $request->deskripsi,
+            ]);
+
+        if($request->file('file')){
+            $this->updateFile($this->path, $rembers, $name = $file->hashName());
+        }
+
+        return back()->with('toast_success', 'Data berhasil disimpan');
     }
 
     /**

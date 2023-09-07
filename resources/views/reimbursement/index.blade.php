@@ -3,8 +3,8 @@
 @section('content')
     <x-container>
         <div>
-            <x-button-modal id="" title="Input Ijin" class="mb-3 btn-warning"/>
-            <x-modal id="" title="Input Ijin/Cuti">
+            <x-button-modal id="" title="Input Rembers" class="mb-3 btn-warning"/>
+            <x-modal id="" title="Input Rembers">
                 <form action="" method="POST" enctype="multipart/form-data">
                     @csrf
                     <x-input title="tanggal" name="tanggal" type="date" placeholder=""
@@ -46,7 +46,8 @@
                                     <td>{{ $rem->status }}</td>
                                     <td>
                                         @if ($rem->status == "Menunggu Konfirmasi")
-                                                {{-- approve --}}
+                                            @can('approve-reject-direktur')
+                                            {{-- approve --}}
                                             <a href="{{ route('kasirpintar.rembes.approve', $rem->id) }}" class="btn btn-success btn-sm">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-ipad-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -64,27 +65,29 @@
                                                     <path d="M17 22l5 -5"></path>
                                                     <path d="M9 17h4"></path>
                                                 </svg>
-                                            </a>
+                                            </a>                                                
+                                            @endcan
+                                            @can('edit-rembers', $rem)
                                             {{-- edit --}}
                                             <x-button-modal id="{{ $rem->id }}" title=""/>
-                                                {{-- <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
-                                                <form action=""
-                                                method="POST">
+                                                <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
+                                                <form action="{{route('kasirpintar.reimburse.update', $rem->id)}}"
+                                                method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
-                                                    <x-input title="NIP" name="nip" type="number"
-                                                    placeholder="" value="{{ $user->nip }}" />
-                                                    <x-input title="Nama" name="nama" type="text"
-                                                    placeholder="" value="{{ $user->nama }}" />
-                                                    <x-select title="Jabatan" name="jabatan">
-                                                        <option value="" selected>Pilih Jabatan</option>
-                                                        <option value="Direktur" @selected($user->jabatan == "Direktur")>Direktur</option>
-                                                        <option value="Finance" @selected($user->jabatan == "Finance")>Finance</option>
-                                                        <option value="Staf" @selected($user->jabatan == "Staf")>Staf</option>
-                                                    </x-select>
+                                                    <x-input title="tanggal" name="tanggal" type="date" placeholder=""
+                                                        value="{{$rem->tanggal}}" />
+                                                    <x-input title="Nama Reimburse" name="nama_reimburse" type="text" placeholder="Masukkan Nama reimburse"
+                                                        value="{{$rem->nama_reimburs}}" />
+                                                    <x-input title="Jumlah" name="jumlah" type="number" placeholder="Masukkan total reimburse"
+                                                        value="{{$rem->jumlah}}" />
+                                                    <x-textarea title="Deskripsi" name="deskripsi" placeholder="">{{$rem->deskripsi}}</x-textarea>
+                                                    <x-input title="Lampiran" name="file" type="file" placeholder=""
+                                                        value="{{$rem->file}}" />
                                                     <x-button-save title="Simpan" />
                                                 </form>
-                                                </x-modal> --}}
+                                                </x-modal>
+                                            @endcan
                                             {{-- delete --}}
                                             <x-button-delete id="{{ $rem->id }}" title=""
                                                 url="" />
@@ -99,7 +102,8 @@
                                                 </a> 
                                         @elseif ($rem->status == "Permintaan Disetujui")
                                             @if (Auth::user()->jabatan == 'Finance')
-                                                 {{-- approve --}}
+                                            @can('approve-reject-finance')
+                                            {{-- approve --}}
                                             <a href="{{ route('kasirpintar.rembes.approve', $rem->id) }}" class="btn btn-success btn-sm">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-ipad-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -117,30 +121,8 @@
                                                     <path d="M17 22l5 -5"></path>
                                                     <path d="M9 17h4"></path>
                                                 </svg>
-                                            </a>
-                                            {{-- edit --}}
-                                            <x-button-modal id="{{ $rem->id }}" title="" />
-                                                {{-- <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
-                                                <form action=""
-                                                method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <x-input title="NIP" name="nip" type="number"
-                                                    placeholder="" value="{{ $user->nip }}" />
-                                                    <x-input title="Nama" name="nama" type="text"
-                                                    placeholder="" value="{{ $user->nama }}" />
-                                                    <x-select title="Jabatan" name="jabatan">
-                                                        <option value="" selected>Pilih Jabatan</option>
-                                                        <option value="Direktur" @selected($user->jabatan == "Direktur")>Direktur</option>
-                                                        <option value="Finance" @selected($user->jabatan == "Finance")>Finance</option>
-                                                        <option value="Staf" @selected($user->jabatan == "Staf")>Staf</option>
-                                                    </x-select>
-                                                    <x-button-save title="Simpan" />
-                                                </form>
-                                                </x-modal> --}}
-                                            {{-- delete --}}
-                                            <x-button-delete id="{{ $rem->id }}" title=""
-                                                url="" />
+                                            </a>                                                
+                                            @endcan
                                             <a href="{{ $rem->file }}" class="btn btn-success btn-sm" target=_blank>
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -150,27 +132,31 @@
                                                     <path d="M20.2 20.2l1.8 1.8"></path>
                                                 </svg>
                                             </a> 
-                                            @else
-                                                {{-- edit --}}
-                                            <x-button-modal id="{{ $rem->id }}" title="" />
-                                                {{-- <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
-                                                <form action=""
-                                                method="POST">
+                                            @elseif (Auth::user()->jabatan == 'Direktur')
+                                            {{-- edit --}}
+                                            <x-button-modal id="{{ $rem->id }}" title=""/>
+                                                <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
+                                                <form action="{{route('kasirpintar.reimburse.update', $rem->id)}}"
+                                                method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
-                                                    <x-input title="NIP" name="nip" type="number"
-                                                    placeholder="" value="{{ $user->nip }}" />
-                                                    <x-input title="Nama" name="nama" type="text"
-                                                    placeholder="" value="{{ $user->nama }}" />
-                                                    <x-select title="Jabatan" name="jabatan">
-                                                        <option value="" selected>Pilih Jabatan</option>
-                                                        <option value="Direktur" @selected($user->jabatan == "Direktur")>Direktur</option>
-                                                        <option value="Finance" @selected($user->jabatan == "Finance")>Finance</option>
-                                                        <option value="Staf" @selected($user->jabatan == "Staf")>Staf</option>
+                                                    <x-input title="tanggal" name="tanggal" type="date" placeholder=""
+                                                        value="{{$rem->tanggal}}" />
+                                                    <x-input title="Nama Reimburse" name="nama_reimburse" type="text" placeholder="Masukkan Nama reimburse"
+                                                        value="{{$rem->nama_reimburs}}" />
+                                                    <x-input title="Jumlah" name="jumlah" type="number" placeholder="Masukkan total reimburse"
+                                                        value="{{$rem->jumlah}}" @readonly(true)/>
+                                                    <x-textarea title="Deskripsi" name="deskripsi" placeholder="">{{$rem->deskripsi}}</x-textarea>
+                                                    <x-input title="Lampiran" name="file" type="file" placeholder=""
+                                                        value="{{$rem->file}}" />
+                                                    <x-select title="Status" name="status">
+                                                        <option value="Menunggu Konfirmasi" @selected($rem->status == "Menunggu Konfirmasi")>Menunggu Konfirmasi</option>
+                                                        <option value="Permintaan Disetujui" @selected($rem->status == "Permintaan Disetujui")>Permintaan Disetujui</option>
+                                                        <option value="Permintaan Ditolak Direktur" @selected($rem->status == "Permintaan Ditolak Direktur")>Permintaan Ditolak Direktur</option>
                                                     </x-select>
                                                     <x-button-save title="Simpan" />
                                                 </form>
-                                                </x-modal> --}}
+                                                </x-modal>
                                             {{-- delete --}}
                                             <x-button-delete id="{{ $rem->id }}" title=""
                                                 url="" />
@@ -183,31 +169,7 @@
                                                         <path d="M20.2 20.2l1.8 1.8"></path>
                                                     </svg>
                                                 </a> 
-                                            @endif
-                                        @else
-                                        {{-- edit --}}
-                                        <x-button-modal id="{{ $rem->id }}" title="" />
-                                            {{-- <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
-                                            <form action=""
-                                            method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <x-input title="NIP" name="nip" type="number"
-                                                placeholder="" value="{{ $user->nip }}" />
-                                                <x-input title="Nama" name="nama" type="text"
-                                                placeholder="" value="{{ $user->nama }}" />
-                                                <x-select title="Jabatan" name="jabatan">
-                                                    <option value="" selected>Pilih Jabatan</option>
-                                                    <option value="Direktur" @selected($user->jabatan == "Direktur")>Direktur</option>
-                                                    <option value="Finance" @selected($user->jabatan == "Finance")>Finance</option>
-                                                    <option value="Staf" @selected($user->jabatan == "Staf")>Staf</option>
-                                                </x-select>
-                                                <x-button-save title="Simpan" />
-                                            </form>
-                                            </x-modal> --}}
-                                        {{-- delete --}}
-                                        <x-button-delete id="{{ $rem->id }}" title=""
-                                            url="" />
+                                            @else
                                             <a href="{{ $rem->file }}" class="btn btn-success btn-sm" target=_blank>
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -216,14 +178,74 @@
                                                     <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                                                     <path d="M20.2 20.2l1.8 1.8"></path>
                                                 </svg>
-                                            </a> 
+                                            </a>
+                                            @endif
+                                        @else
+                                        @if (Auth::user()->jabatan == 'Finance')
+                                            {{-- edit --}}
+                                            <x-button-modal id="{{ $rem->id }}" title=""/>
+                                                <x-modal id="{{ $rem->id }}" title="Ubah Data Karyawan">
+                                                <form action="{{route('kasirpintar.reimburse.update', $rem->id)}}"
+                                                method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <x-input title="tanggal" name="tanggal" type="date" placeholder=""
+                                                        value="{{$rem->tanggal}}" />
+                                                    <x-input title="Nama Reimburse" name="nama_reimburse" type="text" placeholder="Masukkan Nama reimburse"
+                                                        value="{{$rem->nama_reimburs}}" />
+                                                    <x-input title="Jumlah" name="jumlah" type="number" placeholder="Masukkan total reimburse"
+                                                        value="{{$rem->jumlah}}" @readonly(true)/>
+                                                    <x-textarea title="Deskripsi" name="deskripsi" placeholder="">{{$rem->deskripsi}}</x-textarea>
+                                                    <x-input title="Lampiran" name="file" type="file" placeholder=""
+                                                        value="{{$rem->file}}" />
+                                                    <x-select title="Status" name="status">
+                                                        <option value="Permintaan Diverifikasi Finance" @selected($rem->status == "Permintaan Diverifikasi Finance")>Permintaan Diverifikasi Finance</option>
+                                                        <option value="Permintaan Disetujui" @selected($rem->status == "Permintaan Disetujui")>Permintaan Disetujui</option>
+                                                        <option value="Permintaan Ditolak Finance" @selected($rem->status == "Permintaan Ditolak Finance")>Permintaan Ditolak Finance</option>
+                                                    </x-select>
+                                                    <x-button-save title="Simpan" />
+                                                </form>
+                                                </x-modal>
+                                            {{-- delete --}}
+                                            <x-button-delete id="{{ $rem->id }}" title=""
+                                                url="" />
+                                                <a href="{{ $rem->file }}" class="btn btn-success btn-sm" target=_blank>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                        <path d="M12 18c-.328 0 -.652 -.017 -.97 -.05c-3.172 -.332 -5.85 -2.315 -8.03 -5.95c2.4 -4 5.4 -6 9 -6c3.465 0 6.374 1.853 8.727 5.558"></path>
+                                                        <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                                        <path d="M20.2 20.2l1.8 1.8"></path>
+                                                    </svg>
+                                                </a> 
+                                            @elseif (Auth::user()->jabatan == 'Direktur')
+                                            <a href="{{ $rem->file }}" class="btn btn-success btn-sm" target=_blank>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                    <path d="M12 18c-.328 0 -.652 -.017 -.97 -.05c-3.172 -.332 -5.85 -2.315 -8.03 -5.95c2.4 -4 5.4 -6 9 -6c3.465 0 6.374 1.853 8.727 5.558"></path>
+                                                    <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                                    <path d="M20.2 20.2l1.8 1.8"></path>
+                                                </svg>
+                                            </a>
+                                            @else
+                                            <a href="{{ $rem->file }}" class="btn btn-success btn-sm" target=_blank>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                                    <path d="M12 18c-.328 0 -.652 -.017 -.97 -.05c-3.172 -.332 -5.85 -2.315 -8.03 -5.95c2.4 -4 5.4 -6 9 -6c3.465 0 6.374 1.853 8.727 5.558"></path>
+                                                    <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                                    <path d="M20.2 20.2l1.8 1.8"></path>
+                                                </svg>
+                                            </a>
+                                            @endif
                                         @endif
                                         </td>
                                     </td>
                                 </tr>
                             @empty
                                 <div class="alert alert-danger">
-                                    Data rembers belum Tersedia.
+                                    Belum ada data rembers
                                 </div>
                             @endforelse
                         </tbody>

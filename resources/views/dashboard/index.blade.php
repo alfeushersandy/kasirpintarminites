@@ -21,7 +21,7 @@
                         <div class="strong">
                             Request
                         </div>
-                        <div class="text-muted">11</div>
+                        <div class="text-muted">{{$request}}</div>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                         <div class="strong">
                             Pending
                         </div>
-                        <div class="text-muted">11</div>
+                        <div class="text-muted">{{$pending}}</div>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <div class="strong">
                             Approve
                         </div>
-                        <div class="text-muted">11</div>
+                        <div class="text-muted">{{$approve}}</div>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                         <div class="strong">
                             Reject
                         </div>
-                        <div class="text-muted">11</div>
+                        <div class="text-muted">{{$reject}}</div>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                         <div class="strong">
                             Verified
                         </div>
-                        <div class="text-muted">11</div>
+                        <div class="text-muted">{{$verified}}</div>
                     </div>
                 </div>
             </div>

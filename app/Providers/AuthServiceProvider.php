@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
+use App\Models\Reimbursement;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -28,5 +29,18 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('add-karyawan', function(User $user){
             return $user->jabatan == 'Direktur' ? Response::allow() : Response::denyWithStatus(403);
         });
+
+        Gate::define('approve-reject-direktur', function(User $user){
+            return $user->jabatan == 'Direktur';
+        });
+
+        Gate::define('approve-reject-finance', function(User $user){
+            return $user->jabatan == 'Finance';
+        });
+
+        Gate::define('edit-rembers', function(User $user, Reimbursement $rembers){
+            return $user->id === $rembers->user_id || $user->jabatan === 'Direktur';
+        });
+        
     }
 }

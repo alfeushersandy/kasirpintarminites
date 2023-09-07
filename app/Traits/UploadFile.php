@@ -8,7 +8,7 @@ trait UploadFile
 {
     public function uploadFile($request, $path)
     {
-        $image = null;
+        $file = null;
 
         if($request->file('file')){
             $file = $request->file('file');
